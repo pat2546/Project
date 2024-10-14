@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Page</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 min-h-screen flex items-center justify-center">
+    <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
+        <h2 class="text-3xl font-semibold mb-6 text-center text-blue-600">Order Form</h2>
+        
+        <!-- แสดงรูปสินค้าที่เลือก -->
+        <div class="mb-4">
+            <h3 class="text-xl font-semibold text-gray-800">Selected Product</h3>
+            <img src="{{ product.image_url }}" alt="{{ product.name }}" class="w-full h-auto rounded-lg mt-2" />
+            <p class="mt-2 text-gray-600">{{ product.name }} - ${{ product.price }}</p>
+            <p class="text-gray-600">Description: {{ product.description }}</p>
+            <!-- เพิ่มข้อมูลอื่น ๆ ที่คุณต้องการแสดง เช่น หมายเลข SKU หรือข้อมูลพิเศษอื่น ๆ -->
+        </div>
+        
+        <form method="post" class="space-y-6">
+            {% csrf_token %}
+            <div>
+                <label for="name" class="block text-sm font-medium text-gray-700">{{ form.name.label }}</label>
+                <input type="text" name="{{ form.name.name }}" id="{{ form.name.id_for_label }}" value="{{ form.name.value|default_if_none:'' }}" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"/>
+                {% if form.name.errors %}
+                    <div class="text-red-500 text-sm mt-1">
+                        {{ form.name.errors }}
+                    </div>
+                {% endif %}
+            </div>
+            <div>
+                <label for="address" class="block text-sm font-medium text-gray-700">{{ form.address.label }}</label>
+                <input type="text" name="{{ form.address.name }}" id="{{ form.address.id_for_label }}" value="{{ form.address.value|default_if_none:'' }}" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"/>
+                {% if form.address.errors %}
+                    <div class="text-red-500 text-sm mt-1">
+                        {{ form.address.errors }}
+                    </div>
+                {% endif %}
+            </div>
+            <div>
+                <label for="phone" class="block text-sm font-medium text-gray-700">{{ form.phone.label }}</label>
+                <input type="text" name="{{ form.phone.name }}" id="{{ form.phone.id_for_label }}" value="{{ form.phone.value|default_if_none:'' }}" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"/>
+                {% if form.phone.errors %}
+                    <div class="text-red-500 text-sm mt-1">
+                        {{ form.phone.errors }}
+                    </div>
+                {% endif %}
+            </div>
+            <div>
+                <label for="payment_method" class="block text-sm font-medium text-gray-700">{{ form.payment_method.label }}</label>
+                <input type="text" name="{{ form.payment_method.name }}" id="{{ form.payment_method.id_for_label }}" value="{{ form.payment_method.value|default_if_none:'' }}" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"/>
+                {% if form.payment_method.errors %}
+                    <div class="text-red-500 text-sm mt-1">
+                        {{ form.payment_method.errors }}
+                    </div>
+                {% endif %}
+            </div>
+            <button type="submit" class="w-full p-2 bg-blue-500 text-white rounded hover:bg-blue-600">Place Order</button>
+        </form>
+
+        <!-- ปุ่มสำหรับแก้ไขและลบคำสั่งซื้อ -->
+        <div class="mt-6 space-y-2">
+            <a href="{% url 'edit_order' %}" class="w-full p-2 bg-yellow-500 text-white rounded hover:bg-yellow-600 text-center block">Edit Order</a>
+            <a href="{% url 'delete_order' %}" class="w-full p-2 bg-red-500 text-white rounded hover:bg-red-600 text-center block">Delete Order</a>
+        </div>
+    </div>
+</body>
+</html>

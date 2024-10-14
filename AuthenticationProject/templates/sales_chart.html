@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Sales Chart</title>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(to right, #ffafbd, #ffc3a0);
+            color: #333;
+            text-align: center;
+            padding: 20px;
+            position: relative; /* เพื่อให้สามารถใช้ absolute positioning */
+        }
+
+        h1 {
+            color: #fff;
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        #salesChart {
+            max-width: 600px;
+            margin: 0 auto;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            background-color: #fff;
+            padding: 15px;
+        }
+
+        canvas {
+            display: block;
+            margin: 0 auto;
+        }
+
+        .back-button {
+            position: absolute; /* ใช้ position absolute */
+            top: 20px; /* ตำแหน่งด้านบน */
+            left: 20px; /* ตำแหน่งด้านซ้าย */
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            cursor: pointer;
+            text-decoration: none;
+            font-size: 1em;
+        }
+
+        .back-button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+
+<body>
+    <a href="{% url 'index' %}" class="back-button">กลับไปหน้า Index</a> <!-- ปุ่มอยู่ที่มุมบนซ้าย -->
+    
+    <h1>ยอดขายสินค้าสูงสุด</h1>
+    <div id="salesChart">
+        <canvas id="salesChartCanvas" width="400" height="200"></canvas>
+    </div>
+
+    <script>
+        var ctx = document.getElementById('salesChartCanvas').getContext('2d');
+        var salesChart = new Chart(ctx, {
+            type: 'bar', // ประเภทกราฟแท่ง
+            data: {
+                labels: {{ labels|safe }}, // ชื่อสินค้าจาก Django
+                datasets: [{
+                    label: 'ยอดขาย',
+                    data: {{ data|safe }}, // ยอดขายของแต่ละสินค้า
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(255, 206, 86, 0.2)',
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(153, 102, 255, 0.2)',
+                        'rgba(255, 159, 64, 0.2)'
+                    ],
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(153, 102, 255, 1)',
+                        'rgba(255, 159, 64, 1)'
+                    ],
+                    borderWidth: 1,
+                    yAxisID: 'y',
+                },
+                {
+                    label: 'สถานะ',
+                    data: [/* ใส่ข้อมูลสถานะของคุณที่นี่ */], // ข้อมูลสถานะ
+                    type: 'line', // ประเภทกราฟเส้น
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    fill: false,
+                    yAxisID: 'y1',
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        position: 'left',
+                    },
+                    y1: {
+                        beginAtZero: true,
+                        position: 'right',
+                        grid: {
+                            drawOnChartArea: false // ไม่ให้มีกริด
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        labels: {
+                            font: {
+                                size: 16,
+                                weight: 'bold'
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Product</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container mx-auto mt-10">
+        <h1 class="text-2xl font-semibold">แก้ไขสินค้า</h1>
+        <form method="POST">
+            {% csrf_token %}
+            <div class="grid grid-cols-1 gap-4 mt-5">
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700">ชื่อสินค้า:</label>
+                    <input type="text" name="name" value="{{ item.name }}" required class="w-full border rounded p-2">
+                </div>
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700">ราคา:</label>
+                    <input type="number" name="price" value="{{ item.price }}" required class="w-full border rounded p-2">
+                </div>
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700">จำนวน:</label>
+                    <input type="number" name="quantity" value="{{ item.quantity_sold }}" required class="w-full border rounded p-2">
+                </div>
+            </div>
+            <div class="mt-5">
+                <button type="submit" class="bg-blue-500 text-white font-semibold py-2 px-4 rounded">อัปเดตสินค้า</button>
+            </div>
+        </form>
+    </div>
+</body>
+
+</html>

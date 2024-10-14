@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        // ฟังก์ชันตรวจสอบฟอร์ม
+        function validateForm(event) {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            // ตรวจสอบว่าช่อง username และ password ไม่ว่าง
+            if (username === "" || password === "") {
+                alert("Username and password are required.");
+                event.preventDefault(); // ป้องกันไม่ให้ฟอร์มถูกส่งไป
+            }
+        }
+
+        // ฟังก์ชันเก็บสถานะ "Remember Me" ไว้ใน localStorage
+        function handleRememberMe() {
+            const rememberMe = document.getElementById('rememberMeCheckbox').checked;
+            localStorage.setItem('rememberMe', rememberMe);
+        }
+
+        // โหลดสถานะ "Remember Me" เมื่อโหลดหน้าเว็บ
+        window.onload = function() {
+            const rememberMe = localStorage.getItem('rememberMe');
+            if (rememberMe === 'true') {
+                document.getElementById('rememberMeCheckbox').checked = true;
+            }
+        }
+    </script>
+</head>
+<body class="bg-gradient-to-br from-blue-600 to-cyan-300 flex items-center justify-center min-h-screen">
+    <form method="POST" action="{% url 'login' %}" onsubmit="validateForm(event)"> <!-- เพิ่มฟังก์ชัน validateForm -->
+        {% csrf_token %}
+        <div class="bg-white px-10 py-8 rounded-xl shadow-xl max-w-sm w-full">
+            <div class="space-y-6">
+                <h1 class="text-center text-3xl font-semibold text-gray-700">Login</h1>
+                <hr class="mb-4">
+
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="text-center">
+                            {% if message.tags == 'error' %}
+                                <h4 class="text-red-500">{{ message }}</h4>
+                            {% else %}
+                                <h4 class="text-blue-500">{{ message }}</h4>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+
+                <!-- Username field -->
+                <div class="flex items-center border-2 py-2 px-3 rounded-lg shadow-sm">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207" />
+                    </svg>
+                    <input class="pl-2 outline-none border-none w-full text-gray-600" type="text" name="username" id="username" placeholder="Username" required>
+                </div>
+
+                <!-- Password field -->
+                <div class="flex items-center border-2 py-2 px-3 rounded-lg shadow-sm">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd" />
+                    </svg>
+                    <input class="pl-2 outline-none border-none w-full text-gray-600" type="password" name="password" id="password" placeholder="Password" required>
+                </div>
+
+                <!-- Remember Me checkbox -->
+                <div class="flex justify-between items-center mt-4">
+                    <label for="rememberMeCheckbox" class="inline-flex items-center text-gray-700">
+                        <input type="checkbox" id="rememberMeCheckbox" name="rememberMe" class="mr-2" onclick="handleRememberMe()">
+                        <span class="text-sm font-semibold">Remember me?</span>
+                    </label>
+                    <a href="{% url 'forgot-password' %}" class="text-sm text-blue-500 hover:underline">Forgot Password?</a>
+                </div>
+
+                <!-- Submit button -->
+                <button type="submit" value="login" id="login" class="w-full mt-6 bg-gradient-to-r from-blue-600 to-purple-500 hover:to-purple-700 text-white py-2 rounded-lg text-lg shadow-lg transition duration-300 ease-in-out">Login</button>
+
+                <!-- Register link -->
+                <div class="flex justify-center items-center mt-6">
+                    <span class="text-sm text-gray-600">Don't have an account? 
+                        <a href="{% url 'register' %}" class="text-blue-500 hover:underline font-semibold">Register</a>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </form>
+</body>
+</html>

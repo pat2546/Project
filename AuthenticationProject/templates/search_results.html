@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Results</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 h-screen flex flex-col justify-between">
+    <main class="container mx-auto py-8">
+        <h1 class="text-2xl font-bold mb-4">Search Results for "{{ query }}"</h1>
+        
+        {% if products %}
+            <section class="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-10">
+                {% for product in products %}
+                    <section class="p-5 py-10 bg-green-100 text-center rounded-lg shadow-lg">
+                        <h2 class="text-xl font-semibold mb-2">{{ product.name }}</h2>
+                        <p class="mb-5">{{ product.description }}</p>
+                        <h2 class="font-semibold text-lg mb-5">Price: ${{ product.price }}</h2>
+                    </section>
+                {% endfor %}
+            </section>
+        {% else %}
+            <section class="bg-red-100 p-4 rounded shadow text-center">No products found.</section>
+        {% endif %}
+    </main>
+</body>
+</html>

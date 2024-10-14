@@ -1,0 +1,9 @@
+{
+  "devDependencies": {
+    "tailwindcss": "^3.4.10"
+  },
+  "scripts": {
+    "build": "npx tailwindcss -i C:/Project/AuthenticationProject/static/src/input.css -o C:/Project/AuthenticationProject/static/src/output.css --watch"
+
+  }
+}
